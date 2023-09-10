@@ -1,0 +1,55 @@
+version: "3"
+services:
+
+  nginx:
+    build: 
+      context: ./nginx
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+    ports:
+      - "80:80"
+    volumes:
+      - ${HTML_HOST_ROOT_DIRECTORY}:/var/www/html
+    container_name: nginx
+    networks:
+      - learnfinitylabs
+
+  php:
+    build: 
+      context: ./php
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+    volumes:
+      - ${HTML_HOST_ROOT_DIRECTORY}:/var/www/html
+    container_name: php
+    networks:
+      - learnfinitylabs
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: learnfinitylabs
+      MYSQL_USER: learnfinitylabs
+      MYSQL_PASSWORD: learnfinitylabs
+    volumes:
+      - ${MYSQL_HOST_ROOT_DIRECTORY}:/var/lib/mysql
+    container_name: mysql
+    networks:
+      - learnfinitylabs
+
+  node:
+    image: node:lts
+    volumes:
+      - ${HTML_HOST_ROOT_DIRECTORY}:/var/www/html
+    command: tail -f /dev/null
+    working_dir: /var/www/html
+    container_name: node
+    networks:
+      - learnfinitylabs
+
+networks:
+  learnfinitylabs:
