@@ -47,6 +47,8 @@ services:
       - ${HTML_HOST_ROOT_DIRECTORY}:/var/www/html
     command: tail -f /dev/null
     working_dir: /var/www/html
+    ports:
+      - "5173:5173"
     container_name: node
     networks:
       - learnfinitylabs

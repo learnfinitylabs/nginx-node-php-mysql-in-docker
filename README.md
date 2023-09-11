@@ -7,7 +7,7 @@ We will also be setting up the correct user and group for Nginx and PHP-FPM so w
 
 ## Environment Variables
 
-To run this project, you will need to edit the following environment variables to your .env file
+To run this project, you will need to edit the following environment variables to your .env file. Please note that when you are on a windows machine, use the forward slash / instead of the backslack \ for the directory separator (e.g. D:/code/my-docker).
 
 `HTML_HOST_ROOT_DIRECTORY`
 
@@ -24,7 +24,7 @@ Create a folder somwhere in your local machine, then launch terminal, make sure 
 ```bash
   git clone https://github.com/learnfinitylabs/nginx-node-php-mysql-in-docker.git .
 ```
-Make sure that the docker desktop is launched, then nn your terminal, navigate inside the docker folder, then type:
+Make sure that the docker desktop is launched, then in your terminal, navigate inside the docker folder, then type:
 
 ```bash
   docker-compose up -d
