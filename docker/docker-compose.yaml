@@ -11,9 +11,12 @@ services:
       - "80:80"
     volumes:
       - ${HTML_HOST_ROOT_DIRECTORY}:/var/www/html
+      - ${PMA_HOST_ROOT_DIRECTORY}:/usr/share/phpmyadmin
     container_name: nginx
     networks:
       - learnfinitylabs
+    depends_on:
+      - php
 
   php:
     build: 
@@ -23,9 +26,13 @@ services:
         - GID=${GID:-1000}
     volumes:
       - ${HTML_HOST_ROOT_DIRECTORY}:/var/www/html
+      - ${PMA_HOST_ROOT_DIRECTORY}:/usr/share/phpmyadmin
     container_name: php
+    command: /bin/sh -c "/install.sh"
     networks:
       - learnfinitylabs
+    depends_on:
+      - mysql
       
   mysql:
     image: mysql:8.0
@@ -51,6 +58,14 @@ services:
     ports:
       - "5173:5173"
     container_name: node
+    networks:
+      - learnfinitylabs
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    ports:
+      - "1025:1025"
+      - "8025:8025"
     networks:
       - learnfinitylabs
 

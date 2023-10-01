@@ -1,5 +1,9 @@
 FROM php:8.2.10-fpm
 
+RUN apt update \
+    && apt upgrade \
+    && apt install -y wget
+
 ARG UID
 ARG GID
 
@@ -15,11 +19,13 @@ RUN sed -i 's/group = www-data/group = learnfinitylabs/g' /usr/local/etc/php-fpm
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/install-php-extensions && \
-    install-php-extensions @composer pdo_mysql
+    install-php-extensions @composer pdo_mysql mysqli
 
 WORKDIR ${PHP_HOST_ROOT_DIRECTORY}
 
 COPY ./php.ini /usr/local/etc/php/php.ini
 
-USER learnfinitylabs
+COPY ./install.sh /install.sh
+RUN chmod +x /install.sh
 
+USER learnfinitylabs
